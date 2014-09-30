@@ -1,17 +1,19 @@
 class Cat < ActiveRecord::Base
   validates :birth_date,
-    date: { on_or_before: lambda { Time.now } },
+    timeliness: { on_or_before: lambda { Time.now } },
     presence: true
+
   validates :color,
-    inclusion: { in: ['black', 'turquoise', 'maroon', 'orange','fuscia'] },
+    inclusion: { in: ['black', 'turquoise', 'maroon', 'orange','fuschia', 'white'] },
     presence: true
+
   validates :sex,
     inclusion: { in: ['M', 'F', '?'] },
     presence: true
 
-    def age
-      Time.now.year - Time.new(self.birth_date).year
-    end
+  def age
+    Time.now.year - self.birth_date.year
+  end
 
 
 
