@@ -1,0 +1,48 @@
+<% cat.persisted? ? form_method = "PATCH" : form_method = "POST" %>
+<% cat.persisted? ? submit_text = "Update" : submit_text = "Create A Cat" %>
+<% cat.persisted? ? form_url = cat_url(cat) : form_url = cats_url %>
+
+<form action="<%= form_url %>" method="POST">
+<input type="hidden" name="_method" value="<%= form_method %>">
+<label for="cat_name">Cat Name</label>
+<input type="text" name="cat[name]" id="cat_name" value="<%= cat.name %>">
+<br>
+<span>Sex: </span>
+
+<%{"Male" => "M", "Female" => "F","Other" => "?"}.each do |label,value|%>
+  <label for="cat_sex_<%= value.downcase %>"><%= label %></label>
+    <input type="radio"
+      name="cat[sex]"
+      value="<%= value %>"
+      id="cat_sex_<%= value.downcase %>"
+      <%= "checked" if cat.sex == value %> >
+<% end %>
+
+<br>
+
+<label for="cat_color">Color</label>
+<select name="cat[color]" id="cat_color">
+<% Cat::COLORS.each do |color| %>
+  <option value="<%= color %>" <%= "selected" if cat.color == color %>>
+    <%= color.capitalize %></option>
+<% end %>
+</select>
+
+<br>
+
+<label for="cat_birth_date">Date Of Birth</label>
+<input type="date" name="cat[birth_date]" id="cat_birth_date" value="<%= cat.birth_date %>">
+
+<br>
+
+<label for="cat_description">Description</label>
+<br>
+<textarea name="cat[description]" id="cat_description" >
+<%= cat.description %>
+</textarea>
+
+<br>
+
+<input type="submit" value="<%= submit_text + (cat.name || '') %>" >
+
+</form>
