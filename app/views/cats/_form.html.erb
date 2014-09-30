@@ -43,6 +43,7 @@
 
 <br>
 
-<input type="submit" value="<%= submit_text + (cat.name || '') %>" >
+<input type="submit"
+  value="<%= submit_text + (cat.persisted? ? " #{cat.name}" : '') %>" >
 
 </form>

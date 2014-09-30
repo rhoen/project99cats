@@ -52,7 +52,7 @@ class CatRentalRequest < ActiveRecord::Base
   private
 
   def check_date_order
-    unless self.end_date > self.start_date
+    if self.start_date && self.end_date && (self.end_date < self.start_date)
       errors[:end_date] << "End date must be after start date, " +
       "our cats cannot travel through time"
     end
