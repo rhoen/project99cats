@@ -14,6 +14,8 @@ class Cat < ActiveRecord::Base
     inclusion: { in: ['M', 'F', '?'] },
     presence: true
 
+  has_many :cat_rental_requests, ->{ order(:start_date) }, dependent: :destroy
+
   def age
     Time.now.year - self.birth_date.year
   end

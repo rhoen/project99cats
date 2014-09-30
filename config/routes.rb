@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
-  resources :cats
+  resources :cats do
+    resources :cat_rental_requests, only: :new, as: "rental_requests"
+  end
+  resources :cat_rental_requests, only: :create do
+    member do
+      post "approve"
+      post "deny"
+    end
+  end
   root to: "cats#index"
 end

@@ -16,5 +16,52 @@
   </tr>
 </table>
 
+<br>
+
+<table>
+  <caption>Rental Requests For <%= @cat.name %></caption>
+  <tr>
+    <th>Start Date</th>
+    <th>   </th>
+    <th>End Date</th>
+    <th>Status</th>
+    <th></th>
+    <th></th>
+  </tr>
+  <% @cat.cat_rental_requests.each do |request| %>
+  <tr>
+    <td><%= request.start_date %></td>
+    <td>   </td>
+    <td><%= request.end_date %></td>
+    <td><%= request.status %></td>
+    <td>
+      <%= button_to "Approve",
+        approve_cat_rental_request_url(
+        {request_id: request.id}
+        ) if request.pending?%>
+    </td>
+    <td>
+      <%= button_to "Deny",
+        deny_cat_rental_request_url(
+        {request_id: request.id}
+        ) if request.pending?%>
+    </td>
+
+    <td></td>
+  </tr>
+  <% end %>
+</table>
+
+<br>
+
 <a href="<%= edit_cat_url(@cat) %>">Edit <%= @cat.name %></a>
+
+<br>
+
+<a href="<%= new_cat_rental_request_url({cat_id: @cat.id}) %>">
+  Spend some time with <%= @cat.name %>
+</a>
+
+<br>
+
 <a href="<%= cats_url %>">All Cats</a>

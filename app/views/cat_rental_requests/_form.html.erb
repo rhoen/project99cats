@@ -1,0 +1,14 @@
+<form action="<%= cat_rental_requests_url %>" method="POST">
+<input type="hidden" name="request[cat_id]" value="<%= request.cat_id %>">
+
+<label for="rental_start_date">From</label>
+<input type="date" name="request[start_date]" id="rental_start_date" value="<%= request.start_date %>">
+
+<br>
+
+<label for="rental_end_date">To</label>
+<input type="date" name="request[end_date]" id="rental_end_date" value="<%= request.end_date %>">
+
+<input type="submit" value="Submit Request">
+
+</form>
