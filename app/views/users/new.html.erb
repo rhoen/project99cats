@@ -1,12 +1,18 @@
 <h1>Create user</h1>
 <form action="<%= users_url %>" method="POST">
   <input type="hidden" name="_method" value="POST" >
+  <input name="authenticity_token" type="hidden"
+     value="<%= form_authenticity_token %>">
 
-  <label for="sessions_user_name">User Name</label>
-  <inpyt type="text" name="session[user_name]" id="session_user_name">
+  <label for="users_user_name">User Name</label>
+  <input type="text" name="user[user_name]" id="user_user_name">
 
-  <label for="session_password">Password</label>
-  <input type="password" name="session[password]" id="session_password">
+<br>
 
-  <input type="submit" value="login">
+  <label for="user_password">Password</label>
+  <input type="password" name="user[password]" id="user_password">
+
+<br>
+
+  <input type="submit" value="Create User">
 </form>
