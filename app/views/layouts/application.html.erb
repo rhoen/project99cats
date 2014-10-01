@@ -17,6 +17,12 @@
   <a href="<%= new_user_url %>">Create a new user</a>
 <% end %>
 
+<% if flash[:errors] %>
+      <p>
+        <%= flash[:errors]  %>
+      </p>
+<% end %>
+
 <%= yield %>
 
 </body>

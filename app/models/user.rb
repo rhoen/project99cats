@@ -1,6 +1,10 @@
 class User < ActiveRecord::Base
+
+  attr_reader :password
+
   validates :user_name, :password_digest, :session_token, presence: true
   validates :session_token, uniqueness: true
+  validates :password, length: { minimum: 6, allow_nil: true }
 
   after_initialize :new_session_token
 
@@ -16,15 +20,16 @@ class User < ActiveRecord::Base
   end
 
   def new_session_token
-    self.session_token || self.reset_session_token!
+    self.session_token = SecureRandom.base64(16)
   end
 
   def reset_session_token!
     self.session_token = SecureRandom.base64(16)
-    self.save
+    self.save!
   end
 
   def password=(password)
+    @password = password
     self.password_digest = BCrypt::Password.create(password)
   end
 
