@@ -3,7 +3,10 @@ class SessionsController < ApplicationController
 
   def new
     @user = User.new
+  end
 
+  def index
+    @sessions = User.find(params[:user_id]).sessions
   end
 
   def create
@@ -13,15 +16,13 @@ class SessionsController < ApplicationController
     else
       @user = User.new(:user_name => session_params[:user_name])
       render :new
-
     end
 
   end
 
   def destroy
-    current_user.reset_session_token! #THIS COULD BE A PROBLEM
+    current_session.destroy
     session[:session_token] = nil
-
     redirect_to cats_url
   end
 

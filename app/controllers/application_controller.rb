@@ -4,8 +4,13 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def current_user
+    return nil unless current_session
+    @current_user ||= current_session.user
+  end
+
+  def current_session
     return nil if session[:session_token].nil?
-    @current_user ||= User.find_by(session_token: session[:session_token])
+    @current_session ||= Session.find_by(:session_token => session[:session_token])
   end
 
   def signed_in?
@@ -16,8 +21,8 @@ class ApplicationController < ActionController::Base
     user_name, password = credentials[:user_name], credentials[:password]
     @current_user = User.find_by_credentials(user_name, password)
     if @current_user
-      @current_user.reset_session_token!
-      session[:session_token] = @current_user.session_token
+      device, ip = credentials[:device], credentials[:ip]
+      session[:session_token] = @current_user.new_session_token(device, ip)
     end
   end
 
@@ -28,7 +33,7 @@ class ApplicationController < ActionController::Base
   private
 
   def session_params
-    params.require(:session).permit(:user_name, :password)
+    params.require(:session).permit(:user_name, :password, :device, :ip)
   end
 
   def require_current_user

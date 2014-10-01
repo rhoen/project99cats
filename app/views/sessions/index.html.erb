@@ -1,0 +1,18 @@
+<h1>Current Sessions</h1>
+
+<table>
+  <tr>
+    <th>System</th>
+    <th>Location</th>
+    <th></th>
+  </tr>
+  <% @sessions.each do |session| %>
+    <% if session.ip && session.device %>
+      <tr>
+        <td><%= session.device %></td>
+        <td><%= Geocoder.search(session.ip).first.data["city"] + ", " +
+             Geocoder.search(session.ip).first.data["region_name"] %></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>

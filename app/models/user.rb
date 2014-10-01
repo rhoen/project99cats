@@ -2,11 +2,12 @@ class User < ActiveRecord::Base
 
   attr_reader :password
 
-  validates :user_name, :password_digest, :session_token, presence: true
-  validates :session_token, uniqueness: true
+  validates :user_name, :password_digest, presence: true
   validates :password, length: { minimum: 6, allow_nil: true }
 
   after_initialize :new_session_token
+
+  has_many :sessions
 
   has_many :cats
 
@@ -19,13 +20,17 @@ class User < ActiveRecord::Base
     user if user.is_password?(password)
   end
 
-  def new_session_token
-    self.session_token = SecureRandom.base64(16)
-  end
-
-  def reset_session_token!
-    self.session_token = SecureRandom.base64(16)
-    self.save!
+  def new_session_token(device = nil, ip = nil)
+    new_session_token = SecureRandom.base64(16)
+    if self.id
+      Session.create!(
+        user_id: self.id,
+        session_token: new_session_token,
+        device: device,
+        ip: ip
+      )
+    end
+    new_session_token
   end
 
   def password=(password)

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141001191726) do
+ActiveRecord::Schema.define(version: 20141001204736) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,14 +42,22 @@ ActiveRecord::Schema.define(version: 20141001191726) do
 
   add_index "cats", ["owner_id"], name: "index_cats_on_owner_id", using: :btree
 
-  create_table "users", force: true do |t|
-    t.string   "user_name",       null: false
-    t.string   "password_digest", null: false
-    t.string   "session_token",   null: false
+  create_table "sessions", force: true do |t|
+    t.integer  "user_id",       null: false
+    t.string   "session_token", null: false
+    t.string   "device"
+    t.string   "ip"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "users", ["session_token"], name: "index_users_on_session_token", unique: true, using: :btree
+  add_index "sessions", ["user_id"], name: "index_sessions_on_user_id", using: :btree
+
+  create_table "users", force: true do |t|
+    t.string   "user_name",       null: false
+    t.string   "password_digest", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

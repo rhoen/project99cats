@@ -1,6 +1,11 @@
 <h1>Login</h1>
 <form action="<%= session_url %>" method="POST">
   <input type="hidden" name="_method" value="POST" >
+  <input name="session[device]" type="hidden"
+     value= "<%= request.env["HTTP_USER_AGENT"] %>">
+  <input name="session[ip]" type="hidden"
+    value= "<%= request.env["REMOTE_ADDR"] %>">
+
   <input name="authenticity_token" type="hidden"
      value="<%= form_authenticity_token %>">
 
