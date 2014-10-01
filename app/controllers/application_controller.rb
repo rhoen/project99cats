@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  helper_method :current_user, :signed_in?
+  helper_method :current_user, :signed_in?, :user_is_owner?
 
 
 
@@ -32,11 +32,19 @@ class ApplicationController < ActionController::Base
   end
 
   def require_current_user
-    redirect_to(root_url) unless signed_in?
+    redirect_to(new_session_url) unless signed_in?
   end
 
   def require_no_user
     redirect_to(root_url) if signed_in?
+  end
+
+  def check_user_is_owner
+    redirect_to cat_url(params[:id]) unless user_is_owner?
+  end
+
+  def user_is_owner?
+    current_user && Cat.find(params[:id]).owner_id == current_user.id
   end
 
 end

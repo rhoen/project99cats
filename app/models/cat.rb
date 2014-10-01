@@ -16,6 +16,8 @@ class Cat < ActiveRecord::Base
 
   has_many :cat_rental_requests, ->{ order(:start_date) }, dependent: :destroy
 
+  belongs_to :owner, class_name: "User"
+
   def age
     Time.now.year - self.birth_date.year
   end

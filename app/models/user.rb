@@ -4,6 +4,12 @@ class User < ActiveRecord::Base
 
   after_initialize :new_session_token
 
+  has_many :cats
+
+  has_many :owned_cat_rental_requests, through: :cats, source: :cat_rental_requests
+
+  has_many :cat_rental_requests
+
   def self.find_by_credentials(user_name, password)
     user = User.find_by(user_name: user_name)
     user if user.is_password?(password)

@@ -1,5 +1,7 @@
 <form action="<%= cat_rental_requests_url %>" method="POST">
 <input type="hidden" name="request[cat_id]" value="<%= request.cat_id %>">
+<input name="authenticity_token" type="hidden"
+  value="<%= form_authenticity_token %>">
 
 <label for="rental_start_date">From</label>
 <input type="date" name="request[start_date]" id="rental_start_date" value="<%= request.start_date %>">

@@ -1,9 +1,13 @@
 class CatRentalRequest < ActiveRecord::Base
-  validates :cat_id, :start_date, :end_date, presence: true
+  validates :cat_id, :start_date, :end_date, :user_id, presence: true
   validates :status, inclusion: { in: ["APPROVED", "DENIED", "PENDING"]}
-  validate :check_approved_requests, :check_date_order
+
+  validate :check_approved_requests, :check_date_order, :check_cat_owner
 
   belongs_to :cat
+  belongs_to :requester,
+  class_name: "User",
+  foreign_key: :user_id
 
   after_initialize do
     self.status ||= "PENDING"
@@ -61,6 +65,12 @@ class CatRentalRequest < ActiveRecord::Base
   def check_approved_requests
     unless overlapping_approved_requests.empty?
       errors[:cat_id] << "#{Cat.find(self.cat_id).name} is busy between those days!"
+    end
+  end
+
+  def check_cat_owner
+    if cat.owner.id == requester.id
+      errors[:user_id] << "You already own that cat!"
     end
   end
 
