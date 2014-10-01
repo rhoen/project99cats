@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   after_initialize :new_session_token
 
   def self.find_by_credentials(user_name, password)
-    user = self.find_by_user_name(user_name)
+    user = User.find_by(user_name: user_name)
     user if user.is_password?(password)
   end
 
@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
 
   def reset_session_token!
     self.session_token = SecureRandom.base64(16)
+    self.save!
   end
 
   def password=(password)
